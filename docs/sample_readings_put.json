@@ -1,0 +1,16 @@
+{
+   "timestamp":1433031540,
+   "relay_id":"3AC91DEC-B0DD-4DB5-B56D-7682B7C9B28C",
+   "status":"ok",
+   "sensors":[
+      {
+         "id":"31E541A7-815A-4527-88FC-CEA39808FCAC",
+         "readings":[
+            {
+               "timestamp":1433031540,
+		"measurements":[{"name": "temperature_1", "value": 28.3},{"name": "temperature_2", "value": 35.0}]
+            }
+         ]
+      }
+   ]
+}

@@ -1,0 +1,37 @@
+machine:
+  environment:
+    GO15VENDOREXPERIMENT: 1
+  services:
+    - docker
+  pre:
+    - 'sudo pip install awscli'
+checkout:
+  post:
+    - rm -rf ~/.go_workspace/src/github.com/urlgrey
+    - mkdir -p ~/.go_workspace/src/github.com/urlgrey
+    - cp -R ~/streammarker-collector ~/.go_workspace/src/github.com/urlgrey/streammarker-collector
+dependencies:
+  cache_directories:
+    - "~/.rvm/gems"
+  pre:
+    - sudo apt-get remove --purge golang
+    - sudo rm -rf /usr/local/go/
+    - mkdir /tmp/go && wget 'https://storage.googleapis.com/golang/go1.5.3.linux-amd64.tar.gz' -O /tmp/go/go1.5.3.linux-amd64.tar.gz
+    - sudo tar -xzf /tmp/go/go1.5.3.linux-amd64.tar.gz -C /usr/local
+    - wget https://github.com/Masterminds/glide/releases/download/0.8.3/glide-0.8.3-linux-amd64.tar.gz -O /tmp/go/glide-0.8.3-linux-amd64.tar.gz
+    - tar -xzf /tmp/go/glide-0.8.3-linux-amd64.tar.gz -C /tmp/go
+    - sudo cp /tmp/go/linux-amd64/glide /usr/local/bin/glide
+  override:
+    - cd ~/.go_workspace/src/github.com/urlgrey/streammarker-collector && glide install
+    - cd ~/.go_workspace/src/github.com/urlgrey/streammarker-collector/cucumber && bundle install
+test:
+  override:
+    - cd ~/.go_workspace/src/github.com/urlgrey/streammarker-collector && make all
+    - cd ~/.go_workspace/src/github.com/urlgrey/streammarker-collector/cucumber && ./test.sh -t ~@broken -t ~@wip -t ~@todo
+  post:
+    - cd ~/.go_workspace/src/github.com/urlgrey/streammarker-collector && make docker-build
+deployment:
+  automerge:
+    branch: [master]
+    commands:
+       - cd ~/.go_workspace/src/github.com/urlgrey/streammarker-collector && ./deploy.sh $CIRCLE_SHA1

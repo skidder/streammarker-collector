@@ -1,0 +1,21 @@
+{
+  "timestamp": 1433031540,
+  "relay_id": "53644F1C-2480-4F9B-9CBA-26D66139D221",
+  "status": "ok",
+  "sensors": [
+    {
+      "id": "D195E2B3-A1F6-407C-83F5-334FA46B5F6C",
+      "readings": [
+        {
+          "measurements": [
+            {
+              "name": "temperature_1",
+              "value": 28.3,
+              "unit": "Celsius"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
