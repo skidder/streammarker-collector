@@ -50,34 +50,3 @@ Then(/^"(.*?)" messages should be sent by relay id "(.*?)" for sensor "(.*?)"$/)
   json['relay_id'].should eq (relay_device)
   json['sensor_id'].should eq (sensor_id)
 end
-
-def wait_for_sqs_message(queue, timeout, message_count=1)
-  puts "Waiting for message in queue : " + queue + " timeout: " + timeout.to_s
-
-  sqs = AWS::SQS.new(:access_key_id   => 'x',
-                   :secret_access_key => 'y',
-                   :use_ssl           => false,
-                   :sqs_endpoint      => FAKESQS_HOST,
-                   :sqs_port          => FAKESQS_PORT.to_i
-                   )
-  resp = {}
-
-  (1..timeout).each do
-    resp = sqs.client.receive_message(queue_url: queue, visibility_timeout: 10, max_number_of_messages: 10)
-    break unless resp.data[:messages].empty?
-    sleep 1
-  end
-
-  if resp.data[:messages].empty?
-    raise "No messages arrived after #{timeout} seconds"
-  end
-
-  if resp.data[:messages].length > message_count
-    raise "Got more than #{message_count} message(s)"
-  end
-
-  msg = resp.data[:messages].first
-  sqs.client.delete_message(queue_url: queue, receipt_handle: msg[:receipt_handle])
-
-  msg
-end
