@@ -13,20 +13,24 @@ import (
 	"github.com/mholt/binding"
 )
 
+// SensorReadingsHandler represents a handler capable of receiving device sensor readings
 type SensorReadingsHandler struct {
 	sqsService sqsiface.SQSAPI
 	queueURL   string
 }
 
+// NewSensorReadingsHandler creates a new SensorReadingsHandler
 func NewSensorReadingsHandler(sqsService sqsiface.SQSAPI, queueURL string) *SensorReadingsHandler {
 	return &SensorReadingsHandler{sqsService: sqsService, queueURL: queueURL}
 }
 
+// InitializeRouterForSensorReadingsHandlers initializes a router to include a sensor readings endpoint
 func InitializeRouterForSensorReadingsHandlers(r *mux.Router, sqsService sqsiface.SQSAPI, queueURL string) {
 	m := NewSensorReadingsHandler(sqsService, queueURL)
 	r.HandleFunc("/api/v1/sensor_readings", m.SubmitMessage).Methods("POST")
 }
 
+// SubmitMessage receives a device message and submits to a queue for later processing
 func (m *SensorReadingsHandler) SubmitMessage(resp http.ResponseWriter, req *http.Request) {
 	message := new(MeasurementMessage)
 	errs := binding.Bind(req, message)
@@ -63,25 +67,25 @@ func (m *SensorReadingsHandler) SubmitMessage(resp http.ResponseWriter, req *htt
 				ReportingTimestamp: reportingTimestamp,
 				Measurements:       reading.Measurements,
 			}
-
-			if queueMessageJson, err := json.Marshal(queueMessage); err != nil {
+			queueMessageJSON, err := json.Marshal(queueMessage)
+			if err != nil {
 				log.Printf("Error serializing parsed message for queueing: %s", err.Error())
 				http.Error(resp,
 					"Error serializing APRS message for queueing",
 					http.StatusInternalServerError)
 				return
-			} else {
-				params := &sqs.SendMessageInput{
-					MessageBody: aws.String(string(queueMessageJson)),
-					QueueUrl:    aws.String(m.queueURL),
-				}
-				if _, err = m.sqsService.SendMessage(params); err != nil {
-					log.Printf("Error sending message to queue: %s", err.Error())
-					http.Error(resp,
-						"Error sending message to queue",
-						http.StatusInternalServerError)
-					return
-				}
+			}
+
+			params := &sqs.SendMessageInput{
+				MessageBody: aws.String(string(queueMessageJSON)),
+				QueueUrl:    aws.String(m.queueURL),
+			}
+			if _, err = m.sqsService.SendMessage(params); err != nil {
+				log.Printf("Error sending message to queue: %s", err.Error())
+				http.Error(resp,
+					"Error sending message to queue",
+					http.StatusInternalServerError)
+				return
 			}
 		}
 	}
@@ -92,6 +96,7 @@ func (m *SensorReadingsHandler) SubmitMessage(resp http.ResponseWriter, req *htt
 	responseEncoder.Encode("{}")
 }
 
+// MeasurementMessage represents a message to be enqueued for later processing
 type MeasurementMessage struct {
 	Timestamp int32    `json:"timestamp"`
 	RelayID   string   `json:"relay_id"`
@@ -99,6 +104,7 @@ type MeasurementMessage struct {
 	Sensors   []Sensor `json:"sensors"`
 }
 
+// FieldMap binds fields to their JSON labels
 func (m *MeasurementMessage) FieldMap() binding.FieldMap {
 	return binding.FieldMap{
 		&m.Timestamp: "timestamp",
@@ -108,11 +114,13 @@ func (m *MeasurementMessage) FieldMap() binding.FieldMap {
 	}
 }
 
+// Sensor represents a sensor with a collection of readings to be saved
 type Sensor struct {
 	ID             string          `json:"id"`
 	SensorReadings []SensorReading `json:"readings"`
 }
 
+// FieldMap binds fields to their JSON labels
 func (s *Sensor) FieldMap() binding.FieldMap {
 	return binding.FieldMap{
 		&s.ID:             "id",
@@ -120,11 +128,13 @@ func (s *Sensor) FieldMap() binding.FieldMap {
 	}
 }
 
+// SensorReading represents a reading from a point in time with one or more measurements
 type SensorReading struct {
 	Timestamp    int32         `json:"timestamp"`
 	Measurements []Measurement `json:"measurements"`
 }
 
+// FieldMaps binds fields to their JSON labels
 func (s *SensorReading) FieldMap() binding.FieldMap {
 	return binding.FieldMap{
 		&s.Timestamp:    "timestamp",
@@ -132,12 +142,14 @@ func (s *SensorReading) FieldMap() binding.FieldMap {
 	}
 }
 
+// Measurement contains the measurement details
 type Measurement struct {
 	Name  string  `json:"name"`
 	Value float64 `json:"value"`
 	Unit  string  `json:"unit"`
 }
 
+// FieldMap binds fields to their JSON labels
 func (s *Measurement) FieldMap() binding.FieldMap {
 	return binding.FieldMap{
 		&s.Name:  "name",
@@ -145,6 +157,7 @@ func (s *Measurement) FieldMap() binding.FieldMap {
 	}
 }
 
+// SensorReadingQueueMessage holds one or more measurements to be written
 type SensorReadingQueueMessage struct {
 	RelayID            string        `json:"relay_id"`
 	SensorID           string        `json:"sensor_id"`

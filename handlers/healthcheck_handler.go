@@ -11,22 +11,24 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// HealthCheckHandler represents a healthcheck instance
 type HealthCheckHandler struct {
 	sqsService *sqs.SQS
 	queueName  string
 }
 
+// NewHealthCheckHandler constructs a new HealthCheckHandler
 func NewHealthCheckHandler(sqsService *sqs.SQS, queueName string) *HealthCheckHandler {
 	return &HealthCheckHandler{sqsService: sqsService, queueName: queueName}
 }
 
-// Add routes to router
+// InitializeRouterForHealthCheckHandler initiailizes a HealthCheckHandler on the given router
 func InitializeRouterForHealthCheckHandler(r *mux.Router, sqsService *sqs.SQS, queueName string) {
 	m := NewHealthCheckHandler(sqsService, queueName)
 	r.HandleFunc("/healthcheck", m.HealthCheck).Methods("GET")
 }
 
-// Examine and report the health of the component and dependencies
+// HealthCheck performs a health-check
 func (h *HealthCheckHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
 	params := &sqs.ListQueuesInput{
 		QueueNamePrefix: aws.String(h.queueName),

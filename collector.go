@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	DEFAULT_QUEUE_NAME = "streammarker-collector-messages"
+	defaultQueueName = "streammarker-collector-messages"
 )
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 	// get queue name
 	queueName := os.Getenv("STREAMMARKER_QUEUE_NAME")
 	if queueName == "" {
-		queueName = DEFAULT_QUEUE_NAME
+		queueName = defaultQueueName
 	}
 
 	// Initialize HTTP service handlers
