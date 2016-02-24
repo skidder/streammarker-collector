@@ -134,7 +134,7 @@ type SensorReading struct {
 	Measurements []Measurement `json:"measurements"`
 }
 
-// FieldMaps binds fields to their JSON labels
+// FieldMap binds fields to their JSON labels
 func (s *SensorReading) FieldMap() binding.FieldMap {
 	return binding.FieldMap{
 		&s.Timestamp:    "timestamp",
