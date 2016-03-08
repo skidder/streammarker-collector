@@ -80,7 +80,7 @@ func createHealthCheckRouter(ctx context.Context, healthCheckEndpoint endpoint.H
 
 func errorEncoder(w http.ResponseWriter, err error) {
 	switch err {
-	case endpoint.TokenVerificationFailureError:
+	case endpoint.ErrTokenVerificationFailure:
 		w.WriteHeader(http.StatusUnauthorized)
 	default:
 		w.WriteHeader(http.StatusInternalServerError)

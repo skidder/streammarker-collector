@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	TokenVerificationFailureError = errors.New("API token was missing or invalid")
+	ErrTokenVerificationFailure = errors.New("API token was missing or invalid")
 )
 
 // ProtectedOperationRequest is used to indicate a request type uses auth tokens
@@ -31,7 +31,7 @@ func VerifyAPIKey(apiTokens []string) kitendpoint.Middleware {
 					}
 				}
 				if !found {
-					return nil, TokenVerificationFailureError
+					return nil, ErrTokenVerificationFailure
 				}
 			}
 			return next(ctx, request)
