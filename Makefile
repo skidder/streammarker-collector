@@ -23,10 +23,10 @@ tc: test cover
 
 test:
 	if [ ! -d $(COVERAGEDIR) ]; then mkdir $(COVERAGEDIR); fi
-	go test -v ./handlers -race -cover -coverprofile=$(COVERAGEDIR)/handlers.coverprofile
+	go test -v ./endpoint -race -cover -coverprofile=$(COVERAGEDIR)/endpoint.coverprofile
 
 cover:
-	go tool cover -html=$(COVERAGEDIR)/handlers.coverprofile -o $(COVERAGEDIR)/handlers.html
+	go tool cover -html=$(COVERAGEDIR)/endpoint.coverprofile -o $(COVERAGEDIR)/endpoint.html
 
 bench:
 	go test ./... -cpu 2 -bench .

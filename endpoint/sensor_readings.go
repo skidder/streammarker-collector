@@ -1,42 +1,40 @@
-package handlers
+package endpoint
 
 import (
 	"encoding/json"
-	"log"
-	"net/http"
+	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/aws/aws-sdk-go/service/sqs/sqsiface"
-	"github.com/gorilla/mux"
+	kitendpoint "github.com/go-kit/kit/endpoint"
 	"github.com/mholt/binding"
+	"github.com/urlgrey/streammarker-collector/config"
+
+	"golang.org/x/net/context"
 )
 
-// SensorReadingsHandler represents a handler capable of receiving device sensor readings
-type SensorReadingsHandler struct {
+// SensorReadingsServicer provides functions for dealing with new sensor readings
+type SensorReadingsServicer interface {
+	Run(context.Context, interface{}) (interface{}, error)
+}
+
+type sensorReadingService struct {
 	sqsService sqsiface.SQSAPI
 	queueURL   string
+	queueName  string
 }
 
-// NewSensorReadingsHandler creates a new SensorReadingsHandler
-func NewSensorReadingsHandler(sqsService sqsiface.SQSAPI, queueURL string) *SensorReadingsHandler {
-	return &SensorReadingsHandler{sqsService: sqsService, queueURL: queueURL}
+// NewSensorReadingServicer creates a new healthcheck
+func NewSensorReadingServicer(c *config.Configuration) SensorReadingsServicer {
+	return &sensorReadingService{c.SQSService, c.QueueURL, c.QueueName}
 }
 
-// InitializeRouterForSensorReadingsHandlers initializes a router to include a sensor readings endpoint
-func InitializeRouterForSensorReadingsHandlers(r *mux.Router, sqsService sqsiface.SQSAPI, queueURL string) {
-	m := NewSensorReadingsHandler(sqsService, queueURL)
-	r.HandleFunc("/api/v1/sensor_readings", m.SubmitMessage).Methods("POST")
-}
-
-// SubmitMessage receives a device message and submits to a queue for later processing
-func (m *SensorReadingsHandler) SubmitMessage(resp http.ResponseWriter, req *http.Request) {
-	message := new(MeasurementMessage)
-	errs := binding.Bind(req, message)
-	if errs.Handle(resp) {
-		log.Printf("Error while binding request to model: %s", errs.Error())
-		return
+func (s *sensorReadingService) Run(ctx context.Context, i interface{}) (response interface{}, err error) {
+	message, ok := i.(*MeasurementMessage)
+	if !ok {
+		return nil, kitendpoint.ErrBadCast
 	}
 
 	for _, sensor := range message.Sensors {
@@ -69,31 +67,24 @@ func (m *SensorReadingsHandler) SubmitMessage(resp http.ResponseWriter, req *htt
 			}
 			queueMessageJSON, err := json.Marshal(queueMessage)
 			if err != nil {
-				log.Printf("Error serializing parsed message for queueing: %s", err.Error())
-				http.Error(resp,
-					"Error serializing APRS message for queueing",
-					http.StatusInternalServerError)
-				return
+				return nil, fmt.Errorf("Error serializing parsed message for queueing: %s", err.Error())
 			}
 
 			params := &sqs.SendMessageInput{
 				MessageBody: aws.String(string(queueMessageJSON)),
-				QueueUrl:    aws.String(m.queueURL),
+				QueueUrl:    aws.String(s.queueURL),
 			}
-			if _, err = m.sqsService.SendMessage(params); err != nil {
-				log.Printf("Error sending message to queue: %s", err.Error())
-				http.Error(resp,
-					"Error sending message to queue",
-					http.StatusInternalServerError)
-				return
+			if _, err = s.sqsService.SendMessage(params); err != nil {
+				return nil, fmt.Errorf("Error sending message to queue: %s", err.Error())
 			}
 		}
 	}
+	return &ReadingResponse{"OK"}, nil
+}
 
-	resp.Header().Set("Content-Type", "application/json")
-	resp.WriteHeader(http.StatusCreated)
-	responseEncoder := json.NewEncoder(resp)
-	responseEncoder.Encode("{}")
+// ReadingResponse has fields with operation status
+type ReadingResponse struct {
+	Status string `json:"status"`
 }
 
 // MeasurementMessage represents a message to be enqueued for later processing
@@ -102,6 +93,7 @@ type MeasurementMessage struct {
 	RelayID   string   `json:"relay_id"`
 	Status    string   `json:"status"`
 	Sensors   []Sensor `json:"sensors"`
+	APIToken  string
 }
 
 // FieldMap binds fields to their JSON labels
@@ -112,6 +104,11 @@ func (m *MeasurementMessage) FieldMap() binding.FieldMap {
 		&m.Status:    "status",
 		&m.Sensors:   "sensors",
 	}
+}
+
+// GetToken returns the API token associated with the request
+func (m *MeasurementMessage) GetToken() string {
+	return m.APIToken
 }
 
 // Sensor represents a sensor with a collection of readings to be saved
