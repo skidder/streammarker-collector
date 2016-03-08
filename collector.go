@@ -72,65 +72,6 @@ func loadConfiguration() *config.Configuration {
 	}
 }
 
-// import (
-// 	stdlog "log"
-// 	"os"
-
-// 	"github.com/aws/aws-sdk-go/aws"
-// 	"github.com/aws/aws-sdk-go/aws/session"
-// 	"github.com/aws/aws-sdk-go/service/sqs"
-// 	"github.com/codegangsta/negroni"
-// 	kitlog "github.com/go-kit/kit/log"
-// 	"github.com/gorilla/mux"
-// 	"github.com/urlgrey/streammarker-collector/bindings"
-// 	"github.com/urlgrey/streammarker-collector/config"
-// 	"github.com/urlgrey/streammarker-collector/handlers"
-// )
-
-// const (
-// 	defaultQueueName = "streammarker-collector-messages"
-// )
-
-// func main() {
-// 	mainServer := negroni.New()
-
-// 	// Token auth middleware
-// 	tokenVerification := handlers.NewTokenVerificationMiddleware()
-// 	tokenVerification.Initialize()
-// 	mainServer.Use(negroni.HandlerFunc(tokenVerification.Run))
-
-// 	// Create external service connections
-// 	sqsService := createSQSConnection()
-
-// 	// get queue name
-// 	queueName := os.Getenv("STREAMMARKER_QUEUE_NAME")
-// 	if queueName == "" {
-// 		queueName = defaultQueueName
-// 	}
-
-// 	// Initialize HTTP service handlers
-// 	router := mux.NewRouter()
-// 	queueURL := findQueueURL(sqsService, queueName)
-// 	handlers.InitializeRouterForSensorReadingsHandlers(router, sqsService, queueURL)
-// 	mainServer.UseHandler(router)
-// 	go mainServer.Run(":3000")
-
-// 	// `package log` domain
-// 	var logger kitlog.Logger
-// 	logger = kitlog.NewLogfmtLogger(os.Stderr)
-// 	logger = kitlog.NewContext(logger).With("ts", kitlog.DefaultTimestampUTC)
-// 	stdlog.SetOutput(kitlog.NewStdlibAdapter(logger)) // redirect stdlib logging to us
-// 	stdlog.SetFlags(0)                                // flags are handled in our logger
-
-// 	bindings.StartHealthCheckHTTPListener(logger)
-// 	// Run healthcheck service
-// 	healthCheckServer := negroni.New()
-// 	healthCheckRouter := mux.NewRouter()
-// 	handlers.InitializeRouterForHealthCheckHandler(healthCheckRouter, sqsService, queueName)
-// 	healthCheckServer.UseHandler(healthCheckRouter)
-// 	healthCheckServer.Run(":3100")
-// }
-
 func createSQSConnection() *sqs.SQS {
 	config := &aws.Config{}
 	if endpoint := os.Getenv("STREAMMARKER_SQS_ENDPOINT"); endpoint != "" {
