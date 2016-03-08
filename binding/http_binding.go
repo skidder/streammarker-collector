@@ -33,21 +33,22 @@ func StartApplicationHTTPListener(logger kitlog.Logger, root context.Context, er
 		l := levlog.New(logger)
 		l.Info().Log("ApplicationAddress", c.ApplicationAddress, "transport", "HTTP/JSON")
 
-		router := createApplicationRouter(ctx, endpoint.NewSensorReadingServicer(c))
+		router := createApplicationRouter(logger, ctx, endpoint.NewSensorReadingServicer(c))
 		errc <- http.ListenAndServe(c.ApplicationAddress, router)
 	}()
 }
 
-func createApplicationRouter(ctx context.Context, sensorReadingsServicer endpoint.SensorReadingsServicer) *mux.Router {
+func createApplicationRouter(logger kitlog.Logger, ctx context.Context, sensorReadingsServicer endpoint.SensorReadingsServicer) *mux.Router {
 	apiTokens := strings.Split(os.Getenv("STREAMMARKER_COLLECTOR_API_TOKENS"), ",")
 	router := mux.NewRouter()
 	router.Handle("/api/v1/sensor_readings",
 		kithttp.NewServer(
 			ctx,
-			endpoint.VerifyAPIKey(apiTokens)(sensorReadingsServicer.Run),
+			endpoint.VerifyAPIKey(apiTokens)(sensorReadingsServicer.HandleMeasurementMessage),
 			decodeSensorReadingsHTTPRequest,
 			encodeSensorReadingsHTTPResponse,
 			kithttp.ServerErrorEncoder(errorEncoder),
+			kithttp.ServerErrorLogger(logger),
 		)).Methods(postHTTPMethod)
 	return router
 }
@@ -61,12 +62,12 @@ func StartHealthCheckHTTPListener(logger kitlog.Logger, root context.Context, er
 		l := levlog.New(logger)
 		l.Info().Log("HealthCheckAddress", c.HealthCheckAddress, "transport", "HTTP/JSON")
 
-		router := createHealthCheckRouter(ctx, endpoint.NewHealthCheck(c))
+		router := createHealthCheckRouter(logger, ctx, endpoint.NewHealthCheck(c))
 		errc <- http.ListenAndServe(c.HealthCheckAddress, router)
 	}()
 }
 
-func createHealthCheckRouter(ctx context.Context, healthCheckEndpoint endpoint.HealthCheckServicer) *mux.Router {
+func createHealthCheckRouter(logger kitlog.Logger, ctx context.Context, healthCheckEndpoint endpoint.HealthCheckServicer) *mux.Router {
 	router := mux.NewRouter()
 	router.Handle("/healthcheck",
 		kithttp.NewServer(
@@ -74,6 +75,8 @@ func createHealthCheckRouter(ctx context.Context, healthCheckEndpoint endpoint.H
 			healthCheckEndpoint.Run,
 			func(*http.Request) (interface{}, error) { return struct{}{}, nil },
 			encodeHealthCheckHTTPResponse,
+			kithttp.ServerErrorEncoder(errorEncoder),
+			kithttp.ServerErrorLogger(logger),
 		)).Methods(getHTTPMethod)
 	return router
 }
@@ -85,6 +88,9 @@ func errorEncoder(w http.ResponseWriter, err error) {
 	default:
 		w.WriteHeader(http.StatusInternalServerError)
 	}
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"error": err.Error(),
+	})
 }
 
 func encodeHealthCheckHTTPResponse(w http.ResponseWriter, i interface{}) error {

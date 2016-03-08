@@ -17,7 +17,7 @@ import (
 
 // SensorReadingsServicer provides functions for dealing with new sensor readings
 type SensorReadingsServicer interface {
-	Run(context.Context, interface{}) (interface{}, error)
+	HandleMeasurementMessage(context.Context, interface{}) (interface{}, error)
 }
 
 type sensorReadingService struct {
@@ -31,7 +31,7 @@ func NewSensorReadingServicer(c *config.Configuration) SensorReadingsServicer {
 	return &sensorReadingService{c.SQSService, c.QueueURL, c.QueueName}
 }
 
-func (s *sensorReadingService) Run(ctx context.Context, i interface{}) (response interface{}, err error) {
+func (s *sensorReadingService) HandleMeasurementMessage(ctx context.Context, i interface{}) (response interface{}, err error) {
 	message, ok := i.(*MeasurementMessage)
 	if !ok {
 		return nil, kitendpoint.ErrBadCast

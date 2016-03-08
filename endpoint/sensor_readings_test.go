@@ -55,7 +55,7 @@ func (s *SensorReadingsTestSuite) TestRecordReadings_SingleCompleteReading() {
 	}
 
 	// WHEN
-	response, err := s.sensorReadingsServicer.Run(context.Background(), message)
+	response, err := s.sensorReadingsServicer.HandleMeasurementMessage(context.Background(), message)
 
 	// THEN
 	readingResponse := response.(*ReadingResponse)
@@ -79,7 +79,7 @@ func (s *SensorReadingsTestSuite) TestRecordReadings_NoTimestamp() {
 	}
 
 	// WHEN
-	response, err := s.sensorReadingsServicer.Run(context.Background(), message)
+	response, err := s.sensorReadingsServicer.HandleMeasurementMessage(context.Background(), message)
 
 	// THEN
 	readingResponse := response.(*ReadingResponse)
@@ -103,7 +103,7 @@ func (s *SensorReadingsTestSuite) TestRecordReadings_MultipleReadings() {
 	}
 
 	// WHEN
-	response, err := s.sensorReadingsServicer.Run(context.Background(), message)
+	response, err := s.sensorReadingsServicer.HandleMeasurementMessage(context.Background(), message)
 
 	// THEN
 	readingResponse := response.(*ReadingResponse)
@@ -127,7 +127,7 @@ func (s *SensorReadingsTestSuite) TestRecordReadings_SQSError() {
 	}
 
 	// WHEN
-	response, err := s.sensorReadingsServicer.Run(context.Background(), message)
+	response, err := s.sensorReadingsServicer.HandleMeasurementMessage(context.Background(), message)
 
 	// THEN
 	s.Nil(response)
