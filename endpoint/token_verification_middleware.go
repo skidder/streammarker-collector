@@ -8,6 +8,7 @@ import (
 )
 
 var (
+	// ErrTokenVerificationFailure signifies that an auth token was missing or invalid
 	ErrTokenVerificationFailure = errors.New("API token was missing or invalid")
 )
 
