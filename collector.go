@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -62,6 +63,7 @@ func loadConfiguration() *config.Configuration {
 	}
 	sqsService := createSQSConnection()
 	queueURL := findQueueURL(sqsService, queueName)
+	apiTokens := strings.Split(os.Getenv("STREAMMARKER_COLLECTOR_API_TOKENS"), ",")
 
 	return &config.Configuration{
 		QueueName:          queueName,
@@ -69,6 +71,7 @@ func loadConfiguration() *config.Configuration {
 		SQSService:         sqsService,
 		ApplicationAddress: ":3000",
 		HealthCheckAddress: ":3100",
+		APITokens:          apiTokens,
 	}
 }
 

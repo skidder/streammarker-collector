@@ -11,4 +11,5 @@ type Configuration struct {
 	SQSService         sqsiface.SQSAPI
 	QueueName          string
 	QueueURL           string
+	APITokens          []string
 }

@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
-	"strings"
 
 	kitlog "github.com/go-kit/kit/log"
 	levlog "github.com/go-kit/kit/log/levels"
@@ -33,18 +31,17 @@ func StartApplicationHTTPListener(logger kitlog.Logger, root context.Context, er
 		l := levlog.New(logger)
 		l.Info().Log("ApplicationAddress", c.ApplicationAddress, "transport", "HTTP/JSON")
 
-		router := createApplicationRouter(logger, ctx, endpoint.NewSensorReadingServicer(c))
+		router := createApplicationRouter(logger, ctx, c, endpoint.NewSensorReadingServicer(c))
 		errc <- http.ListenAndServe(c.ApplicationAddress, router)
 	}()
 }
 
-func createApplicationRouter(logger kitlog.Logger, ctx context.Context, sensorReadingsServicer endpoint.SensorReadingsServicer) *mux.Router {
-	apiTokens := strings.Split(os.Getenv("STREAMMARKER_COLLECTOR_API_TOKENS"), ",")
+func createApplicationRouter(logger kitlog.Logger, ctx context.Context, c *config.Configuration, sensorReadingsServicer endpoint.SensorReadingsServicer) *mux.Router {
 	router := mux.NewRouter()
 	router.Handle("/api/v1/sensor_readings",
 		kithttp.NewServer(
 			ctx,
-			endpoint.VerifyAPIKey(apiTokens)(sensorReadingsServicer.HandleMeasurementMessage),
+			endpoint.VerifyAPIKey(c.APITokens)(sensorReadingsServicer.HandleMeasurementMessage),
 			decodeSensorReadingsHTTPRequest,
 			encodeSensorReadingsHTTPResponse,
 			kithttp.ServerErrorEncoder(errorEncoder),
