@@ -1,36 +1,6 @@
 hash: cb8d9b4da6c00be45d742ff814ef42a1a775f993fb85d85cabb3d0cd42a3cab6
-updated: 2016-03-06T08:30:58.536732934-08:00
+updated: 2016-03-17T07:21:56.587020726-07:00
 imports:
-- name: code.google.com/p/go.net
-  version: ""
-  repo: https://code.google.com/p/go.net
-- name: code.google.com/p/go.text
-  version: ""
-  repo: https://code.google.com/p/go.text
-- name: common
-  version: ""
-  repo: https://common
-- name: gen/stress
-  version: ""
-  repo: https://gen/stress
-- name: gen/thrifttest
-  version: ""
-  repo: https://gen/thrifttest
-- name: git.apache.org/thrift.git
-  version: 35b4465ab75c28c5adce8b2ba96137cfc5f99f72
-  repo: https://git.apache.org/thrift.git
-- name: github.com/afex/hystrix-go
-  version: 9351b724be3950ef0ca82c53f817dcd33947e95e
-  repo: https://github.com/afex/hystrix-go
-- name: github.com/apache/thrift
-  version: 35b4465ab75c28c5adce8b2ba96137cfc5f99f72
-  repo: https://github.com/apache/thrift
-- name: github.com/armon/circbuf
-  version: bbbad097214e2918d8543d5201d12bfd7bca254d
-- name: github.com/armon/go-metrics
-  version: 345426c77237ece5dab0e1605c3e4b35c3f54757
-- name: github.com/armon/go-radix
-  version: 4239b77079c7b5d1243b7b4736304ce8ddb6f0f2
 - name: github.com/aws/aws-sdk-go
   version: 4f9a300f2af32035b3ae8bd0ce9b0fe8412df743
   subpackages:
@@ -43,221 +13,58 @@ imports:
   - internal/signer/v4
   - service/sqs
   - aws/awserr
-- name: github.com/beorn7/perks
-  version: b965b613227fddccbfffe13eae360ed3fa822f8d
-  repo: https://github.com/beorn7/perks
-- name: github.com/bgentry/speakeasy
-  version: 36e9cfdd690967f4f690c6edcc9ffacd006014a0
-- name: github.com/boltdb/bolt
-  version: ee4a0888a9abe7eefe5a0992ca4cb06864839873
-- name: github.com/cactus/go-statsd-client
-  version: f8ec59164ee0749607f4ffc51ad7232caa5ff6e6
-  repo: https://github.com/cactus/go-statsd-client
-- name: github.com/codahale/hdrhistogram
-  version: e88be87d51429689cef99043a54150d733265cd7
-  repo: https://github.com/codahale/hdrhistogram
+  - aws/session
+  - service/sqs/sqsiface
+  - aws/request
+  - aws/credentials
+  - aws/client
+  - aws/corehandlers
+  - aws/defaults
+  - private/endpoints
+  - aws/awsutil
+  - aws/client/metadata
+  - private/protocol/query
+  - private/signer/v4
+  - aws/credentials/ec2rolecreds
+  - aws/ec2metadata
+  - private/protocol/query/queryutil
+  - private/protocol/xml/xmlutil
+  - private/protocol/rest
 - name: github.com/codegangsta/negroni
   version: c7477ad8e330bef55bf1ebe300cf8aa67c492d1b
-- name: github.com/coreos/go-etcd
-  version: 003851be7bb0694fe3cc457a49529a19388ee7cf
-  repo: https://github.com/coreos/go-etcd
-- name: github.com/DataDog/datadog-go
-  version: b050cd8f4d7c394545fd7d966c8e2909ce89d552
-  repo: https://github.com/DataDog/datadog-go
-- name: github.com/elazarl/go-bindata-assetfs
-  version: 57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2
-- name: github.com/fsouza/go-dockerclient
-  version: 7b651349f9479f5114913eefbfd3c4eeddd79ab4
 - name: github.com/go-ini/ini
   version: 776aa739ce9373377cd16f526cdf06cb4c89b40f
 - name: github.com/go-kit/kit
   version: 12b51051246657007b9296e0b289fb00dd3ab0a7
-- name: github.com/golang/glog
-  version: 23def4e6c14b4da8ac2ed8007337bc5eb5007998
-- name: github.com/golang/mock
-  version: bd3c8e81be01eef76d4b503f5e687d2d1354d2d9
-  repo: https://github.com/golang/mock
-- name: github.com/golang/protobuf
-  version: 0dfe8f37844c14cb32c7247925270e0f7ba90973
-  repo: https://github.com/golang/protobuf
+  subpackages:
+  - log
+  - log/levels
+  - transport/http
+  - endpoint
 - name: github.com/gorilla/context
   version: 215affda49addc4c8ef7e2534915df2c8c35c6cd
 - name: github.com/gorilla/mux
   version: 8096f47503459bcc74d1f4c487b7e6e42e5746b5
-- name: github.com/hashicorp/consul
-  version: b16f2e739216b746bda87fb5b677fa672f09afb7
-  repo: https://github.com/hashicorp/consul
-- name: github.com/hashicorp/errwrap
-  version: 7554cd9344cec97297fa6649b055a8c98c2a1e55
-- name: github.com/hashicorp/go-checkpoint
-  version: e4b2dc34c0f698ee04750bf2035d8b9384233e1b
-- name: github.com/hashicorp/go-cleanhttp
-  version: 875fb671b3ddc66f8e2f0acc33829c8cb989a38d
-- name: github.com/hashicorp/go-immutable-radix
-  version: 12e90058b2897552deea141eff51bb7a07a09e63
-- name: github.com/hashicorp/go-memdb
-  version: 31949d523ade8a236956c6f1761e9dcf902d1638
-- name: github.com/hashicorp/go-msgpack
-  version: fa3f63826f7c23912c15263591e65d54d080b458
-  subpackages:
-  - codec
-- name: github.com/hashicorp/go-multierror
-  version: d30f09973e19c1dfcd120b2d9c4f168e68d6b5d5
-- name: github.com/hashicorp/go-reap
-  version: 2d85522212dcf5a84c6b357094f5c44710441912
-- name: github.com/hashicorp/go-syslog
-  version: 42a2b573b664dbf281bd48c3cc12c086b17a39ba
-- name: github.com/hashicorp/go-uuid
-  version: 36289988d83ca270bc07c234c36f364b0dd9c9a7
-- name: github.com/hashicorp/go.net
-  version: 104dcad90073cd8d1e6828b2af19185b60cf3e29
-  repo: https://github.com/hashicorp/go.net
-- name: github.com/hashicorp/golang-lru
-  version: 5c7531c003d8bf158b0fe5063649a2f41a822146
-- name: github.com/hashicorp/hcl
-  version: 578dd9746824a54637686b51a41bad457a56bcef
-- name: github.com/hashicorp/logutils
-  version: 0dc08b1671f34c4250ce212759ebd880f743d883
-- name: github.com/hashicorp/mdns
-  version: 9d85cf22f9f8d53cb5c81c1b2749f438b2ee333f
-  repo: https://github.com/hashicorp/mdns
-- name: github.com/hashicorp/memberlist
-  version: 9888dc523910e5d22c5be4f6e34520943df21809
-- name: github.com/hashicorp/net-rpc-msgpackrpc
-  version: a14192a58a694c123d8fe5481d4a4727d6ae82f3
-- name: github.com/hashicorp/raft
-  version: 057b893fd996696719e98b6c44649ea14968c811
-- name: github.com/hashicorp/raft-boltdb
-  version: d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee
-- name: github.com/hashicorp/scada-client
-  version: 84989fd23ad4cc0e7ad44d6a871fd793eb9beb0a
-- name: github.com/hashicorp/serf
-  version: e4ec8cc423bbe20d26584b96efbeb9102e16d05f
-  subpackages:
-  - coordinate
-  - serf
-- name: github.com/hashicorp/yamux
-  version: df949784da9ed028ee76df44652e42d37a09d7e4
-- name: github.com/inconshreveable/muxado
-  version: f693c7e88ba316d1a0ae3e205e22a01aa3ec2848
-- name: github.com/jessevdk/go-flags
-  version: 6b9493b3cb60367edd942144879646604089e3f7
-  repo: https://github.com/jessevdk/go-flags
 - name: github.com/jmespath/go-jmespath
   version: 0b12d6b521d83fc7f755e7cfc1b1fbdd35a01a74
-- name: github.com/juju/ratelimit
-  version: 77ed1c8a01217656d2080ad51981f6e99adaa177
-  repo: https://github.com/juju/ratelimit
-- name: github.com/julienschmidt/httprouter
-  version: 77366a47451a56bb3ba682481eed85b64fea14e8
-  repo: https://github.com/julienschmidt/httprouter
-- name: github.com/lsegal/gucumber
-  version: e8116c9c66e641e9f81fc0a79fac923dfc646378
-- name: github.com/mattn/go-isatty
-  version: 56b76bdf51f7708750eac80fa38b952bb9f32639
-- name: github.com/matttproud/golang_protobuf_extensions
-  version: d0c3fe89de86839aecf2e0579c40ba3bb336a453
-  repo: https://github.com/matttproud/golang_protobuf_extensions
 - name: github.com/mholt/binding
   version: 6c082304f300fc70793cb0be18af0fdd4acd2b75
-- name: github.com/miekg/dns
-  version: 75e6e86cc601825c5dbcd4e0c209eab180997cd7
-- name: github.com/mitchellh/cli
-  version: cb6853d606ea4a12a15ac83cc43503df99fd28fb
-- name: github.com/mitchellh/mapstructure
-  version: 281073eb9eb092240d33ef253c404f1cca550309
-- name: github.com/prometheus/client_golang
-  version: 15006a7ed88e73201c4e6142a2e66b54ae5fdf00
-  repo: https://github.com/prometheus/client_golang
-- name: github.com/prometheus/client_model
-  version: fa8ad6fec33561be4280a8f0514318c79d7f6cb6
-  repo: https://github.com/prometheus/client_model
-- name: github.com/prometheus/common
-  version: 23070236b1ebff452f494ae831569545c2b61d26
-  repo: https://github.com/prometheus/common
-- name: github.com/prometheus/procfs
-  version: 406e5b7bfd8201a36e2bb5f7bdae0b03380c2ce8
-  repo: https://github.com/prometheus/procfs
-- name: github.com/rcrowley/go-metrics
-  version: eeba7bd0dd01ace6e690fa833b3f22aaec29af43
-  repo: https://github.com/rcrowley/go-metrics
-- name: github.com/ryanuber/columnize
-  version: 983d3a5fab1bf04d1b412465d2d9f8430e2e917e
-- name: github.com/samuel/go-zookeeper
-  version: 218e9c81c0dd8b3b18172b2bbfad92cc7d6db55f
-  repo: https://github.com/samuel/go-zookeeper
-- name: github.com/shiena/ansicolor
-  version: a422bbe96644373c5753384a59d678f7d261ff10
-- name: github.com/Sirupsen/logrus
-  version: 219c8cb75c258c552e999735be6df753ffc7afdc
-  repo: https://github.com/Sirupsen/logrus
-- name: github.com/sony/gobreaker
-  version: 7b3b6140aefe29b32f779da1ea73510d3d315609
-  repo: https://github.com/sony/gobreaker
-- name: github.com/stathat/go
-  version: 91dfa3a59c5b233fef9a346a1460f6e2bc889d93
-  repo: https://github.com/stathat/go
-- name: github.com/streadway/handy
-  version: b8cb1681462b5fca34da3de14378a56d512e0dc7
-  repo: https://github.com/streadway/handy
 - name: github.com/stretchr/objx
   version: 1a9d0bb9f541897e62256577b352fdbc1fb4fd94
 - name: github.com/stretchr/testify
   version: e22aedd37671fb115be6c0c25129c405cb575cfd
   subpackages:
   - assert
-- name: github.com/ugorji/go
-  version: 187fa0f8af224437e08ecb3f208c4d1a94859a61
-  repo: https://github.com/ugorji/go
+  - mock
 - name: github.com/vaughan0/go-ini
   version: a98ad7ee00ec53921f08832bc06ecf7fd600e6a1
-- name: golang.org/x/crypto
-  version: 5dc8cb4b8a8eb076cbb5a06bc3b8682c15bdbbd3
 - name: golang.org/x/net
-  version: 08f168e593b5aab61849054b77981de812666697
-- name: golang.org/x/oauth2
-  version: 045497edb6234273d67dbc25da3f2ddbc4c4cacf
-  repo: https://golang.org/x/oauth2
-- name: golang.org/x/sys
-  version: 20457ee8ea8546920d3f4e19e405da45250dc5a5
+  version: 35b06af0720201bc2f326773a80767387544f8c4
   subpackages:
-  - unix
-- name: golang.org/x/text
-  version: a71fd10341b064c10f4a81ceac72bcf70f26ea34
-- name: golang.org/x/tools
-  version: 2336c53cf04073efa9df218532d1fba3967d883b
-- name: google.golang.org/api
-  version: e61f6e00cdf8b78313641288c50f6e2d4e3d749c
-  repo: https://google.golang.org/api
-- name: google.golang.org/appengine
-  version: 12d5545dc1cfa6047a286d5e853841b6471f4c19
-  repo: https://google.golang.org/appengine
-- name: google.golang.org/cloud
-  version: e7549b8fad79f1f0b4cb2977d9acc45232a71894
-  repo: https://google.golang.org/cloud
-- name: google.golang.org/grpc
-  version: fea7689493da00c4590150b3534c256a962259d3
-  repo: https://google.golang.org/grpc
-- name: gopkg.in/airbrake/gobrake.v2
-  version: c9d51adc624b5cc4c1bf8de730a09af4878ffe2d
-  repo: https://gopkg.in/airbrake/gobrake.v2
-- name: gopkg.in/gemnasium/logrus-airbrake-hook.v2
-  version: 31e6fd4bd5a98d8ee7673d24bc54ec73c31810dd
-  repo: https://gopkg.in/gemnasium/logrus-airbrake-hook.v2
+  - context
+  - context/ctxhttp
 - name: gopkg.in/logfmt.v0
   version: ffc984a0eaff44e46e1f42d6e0a65b665587a938
 - name: gopkg.in/stack.v1
   version: 0585967eab0016c8e4e2d55ac20585b469574cec
-- name: shared
-  version: ""
-  repo: https://shared
-- name: thrift
-  version: ""
-  repo: https://thrift
-- name: thrifttest
-  version: ""
-  repo: https://thrifttest
-- name: tutorial
-  version: ""
-  repo: https://tutorial
 devImports: []
