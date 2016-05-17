@@ -8,10 +8,10 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go/service/sqs"
+	"github.com/skidder/streammarker-collector/config"
+	"github.com/skidder/streammarker-collector/mocks"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
-	"github.com/urlgrey/streammarker-collector/config"
-	"github.com/urlgrey/streammarker-collector/mocks"
 
 	"golang.org/x/net/context"
 )

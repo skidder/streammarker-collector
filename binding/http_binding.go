@@ -10,8 +10,8 @@ import (
 	kithttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 	"github.com/mholt/binding"
-	"github.com/urlgrey/streammarker-collector/config"
-	"github.com/urlgrey/streammarker-collector/endpoint"
+	"github.com/skidder/streammarker-collector/config"
+	"github.com/skidder/streammarker-collector/endpoint"
 
 	"golang.org/x/net/context"
 )
@@ -70,7 +70,7 @@ func createHealthCheckRouter(logger kitlog.Logger, ctx context.Context, healthCh
 		kithttp.NewServer(
 			ctx,
 			healthCheckEndpoint.Run,
-			func(*http.Request) (interface{}, error) { return struct{}{}, nil },
+			func(context.Context, *http.Request) (interface{}, error) { return struct{}{}, nil },
 			encodeHealthCheckHTTPResponse,
 			kithttp.ServerErrorEncoder(errorEncoder),
 			kithttp.ServerErrorLogger(logger),
@@ -78,24 +78,19 @@ func createHealthCheckRouter(logger kitlog.Logger, ctx context.Context, healthCh
 	return router
 }
 
-func errorEncoder(w http.ResponseWriter, err error) {
-	switch err {
-	case endpoint.ErrTokenVerificationFailure:
-		w.WriteHeader(http.StatusUnauthorized)
-	default:
-		w.WriteHeader(http.StatusInternalServerError)
-	}
+func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
+	w.WriteHeader(http.StatusUnauthorized)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"error": err.Error(),
 	})
 }
 
-func encodeHealthCheckHTTPResponse(w http.ResponseWriter, i interface{}) error {
+func encodeHealthCheckHTTPResponse(ctx context.Context, w http.ResponseWriter, i interface{}) error {
 	w.Header().Add("Content-Type", "application/json")
 	return json.NewEncoder(w).Encode(i.(*endpoint.HealthCheckResponse))
 }
 
-func decodeSensorReadingsHTTPRequest(r *http.Request) (interface{}, error) {
+func decodeSensorReadingsHTTPRequest(ctx context.Context, r *http.Request) (interface{}, error) {
 	message := new(endpoint.MeasurementMessage)
 	errs := binding.Bind(r, message)
 	if errs != nil {
@@ -105,7 +100,7 @@ func decodeSensorReadingsHTTPRequest(r *http.Request) (interface{}, error) {
 	return message, nil
 }
 
-func encodeSensorReadingsHTTPResponse(w http.ResponseWriter, i interface{}) error {
+func encodeSensorReadingsHTTPResponse(ctx context.Context, w http.ResponseWriter, i interface{}) error {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	return json.NewEncoder(w).Encode(i.(*endpoint.ReadingResponse))

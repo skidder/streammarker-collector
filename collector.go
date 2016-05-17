@@ -1,4 +1,4 @@
-package main // import "github.com/urlgrey/streammarker-collector"
+package main // import "github.com/skidder/streammarker-collector"
 
 import (
 	"fmt"
@@ -14,8 +14,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	kitlog "github.com/go-kit/kit/log"
-	"github.com/urlgrey/streammarker-collector/binding"
-	"github.com/urlgrey/streammarker-collector/config"
+	"github.com/skidder/streammarker-collector/binding"
+	"github.com/skidder/streammarker-collector/config"
 	"golang.org/x/net/context"
 )
 

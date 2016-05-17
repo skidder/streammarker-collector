@@ -5,8 +5,8 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStartPre=/usr/bin/docker pull urlgrey/streammarker-collector
-ExecStart=/usr/bin/docker run --rm --name sm-collector -p 80:3000 -e STREAMMARKER_COLLECTOR_API_TOKENS=xxxx -e AWS_REGION=us-east-1 -e AWS_ACCESS_KEY_ID=xxxx -e AWS_SECRET_ACCESS_KEY=xxxx urlgrey/streammarker-collector
+ExecStartPre=/usr/bin/docker pull skidder/streammarker-collector
+ExecStart=/usr/bin/docker run --rm --name sm-collector -p 80:3000 -e STREAMMARKER_COLLECTOR_API_TOKENS=xxxx -e AWS_REGION=us-east-1 -e AWS_ACCESS_KEY_ID=xxxx -e AWS_SECRET_ACCESS_KEY=xxxx skidder/streammarker-collector
 ExecStop=/usr/bin/docker stop sm-collector
 
 [X-Fleet]

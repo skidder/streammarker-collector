@@ -36,8 +36,8 @@ run: build
 
 docker-build:
 	docker info
-	docker build -t urlgrey/streammarker-collector:latest .
+	docker build -t skidder/streammarker-collector:latest .
 
 docker-deploy:
 	docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}
-	docker push urlgrey/streammarker-collector:latest
+	docker push skidder/streammarker-collector:latest

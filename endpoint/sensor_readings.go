@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/sqs/sqsiface"
 	kitendpoint "github.com/go-kit/kit/endpoint"
 	"github.com/mholt/binding"
-	"github.com/urlgrey/streammarker-collector/config"
+	"github.com/skidder/streammarker-collector/config"
 
 	"golang.org/x/net/context"
 )

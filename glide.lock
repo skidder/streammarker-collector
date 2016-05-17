@@ -1,5 +1,5 @@
-hash: cb8d9b4da6c00be45d742ff814ef42a1a775f993fb85d85cabb3d0cd42a3cab6
-updated: 2016-03-17T07:21:56.587020726-07:00
+hash: 7878b960c49caaf7ae3c44d940a38b1f10ad7149703407440b046914514d782d
+updated: 2016-05-16T18:56:00.00579365-07:00
 imports:
 - name: github.com/aws/aws-sdk-go
   version: 4f9a300f2af32035b3ae8bd0ce9b0fe8412df743
@@ -33,20 +33,26 @@ imports:
 - name: github.com/codegangsta/negroni
   version: c7477ad8e330bef55bf1ebe300cf8aa67c492d1b
 - name: github.com/go-ini/ini
-  version: 776aa739ce9373377cd16f526cdf06cb4c89b40f
+  version: 12f418cc7edc5a618a51407b7ac1f1f512139df3
 - name: github.com/go-kit/kit
-  version: 12b51051246657007b9296e0b289fb00dd3ab0a7
+  version: 8d97c7704fec2d9735cf1c6c96c32a75056c4dfd
   subpackages:
   - log
   - log/levels
   - transport/http
   - endpoint
+- name: github.com/go-logfmt/logfmt
+  version: 538518f3a61c040f3d15f05decfffef6bd0302bc
+- name: github.com/go-stack/stack
+  version: 100eb0c0a9c5b306ca2fb4f165df21d80ada4b82
 - name: github.com/gorilla/context
   version: 215affda49addc4c8ef7e2534915df2c8c35c6cd
 - name: github.com/gorilla/mux
   version: 8096f47503459bcc74d1f4c487b7e6e42e5746b5
 - name: github.com/jmespath/go-jmespath
   version: 0b12d6b521d83fc7f755e7cfc1b1fbdd35a01a74
+- name: github.com/kr/logfmt
+  version: b84e30acd515aadc4b783ad4ff83aff3299bdfe0
 - name: github.com/mholt/binding
   version: 6c082304f300fc70793cb0be18af0fdd4acd2b75
 - name: github.com/stretchr/objx
@@ -59,12 +65,8 @@ imports:
 - name: github.com/vaughan0/go-ini
   version: a98ad7ee00ec53921f08832bc06ecf7fd600e6a1
 - name: golang.org/x/net
-  version: 35b06af0720201bc2f326773a80767387544f8c4
+  version: 195180cfebf7362bd243a52477697895128c8777
   subpackages:
   - context
   - context/ctxhttp
-- name: gopkg.in/logfmt.v0
-  version: ffc984a0eaff44e46e1f42d6e0a65b665587a938
-- name: gopkg.in/stack.v1
-  version: 0585967eab0016c8e4e2d55ac20585b469574cec
 devImports: []

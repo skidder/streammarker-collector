@@ -1,4 +1,4 @@
-package: github.com/urlgrey/streammarker-collector
+package: github.com/skidder/streammarker-collector
 import:
 - package: github.com/aws/aws-sdk-go
   version: 4f9a300f2af32035b3ae8bd0ce9b0fe8412df743
@@ -21,10 +21,18 @@ import:
 - package: github.com/mholt/binding
   version: 6c082304f300fc70793cb0be18af0fdd4acd2b75
 - package: github.com/go-kit/kit
-  version: 12b51051246657007b9296e0b289fb00dd3ab0a7
+  version: 8d97c7704fec2d9735cf1c6c96c32a75056c4dfd
 - package: github.com/stretchr/testify
   version: e22aedd37671fb115be6c0c25129c405cb575cfd
   subpackages:
   - assert
+- package: golang.org/x/net
+  version: 195180cfebf7362bd243a52477697895128c8777
+  subpackages:
+  - context
 - package: github.com/vaughan0/go-ini
   version: a98ad7ee00ec53921f08832bc06ecf7fd600e6a1
+- package: github.com/go-logfmt/logfmt
+  version: 538518f3a61c040f3d15f05decfffef6bd0302bc
+- package: github.com/go-stack/stack
+  version: 100eb0c0a9c5b306ca2fb4f165df21d80ada4b82
