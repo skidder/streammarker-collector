@@ -10,6 +10,7 @@ coverage
 bin
 .DS_Store
 vendor
+streammarker-collector
 
 # Architecture specific extensions/prefixes
 *.[568vq]

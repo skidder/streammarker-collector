@@ -5,7 +5,7 @@ all: clean build test cover
 
 clean: 
 	if [ -d $(COVERAGEDIR) ]; then rm -rf $(COVERAGEDIR); fi
-	if [ -d bin ]; then rm -rf bin; fi
+	if [ -e streammarker-collector ]; then rm -f streammarker-collector; fi
 
 install-deps:
 	glide install
@@ -13,8 +13,7 @@ install-deps:
 all: build test
 
 build:
-	if [ ! -d bin ]; then mkdir bin; fi
-	go build -v -o bin/streammarker-collector
+	go build -v -o streammarker-collector
 
 fmt:
 	go fmt ./...
