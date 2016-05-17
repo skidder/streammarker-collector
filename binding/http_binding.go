@@ -79,7 +79,17 @@ func createHealthCheckRouter(logger kitlog.Logger, ctx context.Context, healthCh
 }
 
 func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
-	w.WriteHeader(http.StatusUnauthorized)
+	e, ok := err.(kithttp.Error)
+	if ok {
+		switch e.Err {
+		case endpoint.ErrTokenVerificationFailure:
+			w.WriteHeader(http.StatusUnauthorized)
+		default:
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+	} else {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"error": err.Error(),
 	})
