@@ -3,6 +3,7 @@ package endpoint
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -97,7 +98,7 @@ type MeasurementMessage struct {
 }
 
 // FieldMap binds fields to their JSON labels
-func (m *MeasurementMessage) FieldMap() binding.FieldMap {
+func (m *MeasurementMessage) FieldMap(req *http.Request) binding.FieldMap {
 	return binding.FieldMap{
 		&m.Timestamp: "timestamp",
 		&m.RelayID:   "relay_id",
@@ -118,7 +119,7 @@ type Sensor struct {
 }
 
 // FieldMap binds fields to their JSON labels
-func (s *Sensor) FieldMap() binding.FieldMap {
+func (s *Sensor) FieldMap(req *http.Request) binding.FieldMap {
 	return binding.FieldMap{
 		&s.ID:             "id",
 		&s.SensorReadings: "readings",
@@ -147,7 +148,7 @@ type Measurement struct {
 }
 
 // FieldMap binds fields to their JSON labels
-func (s *Measurement) FieldMap() binding.FieldMap {
+func (s *Measurement) FieldMap(req *http.Request) binding.FieldMap {
 	return binding.FieldMap{
 		&s.Name:  "name",
 		&s.Value: "value",
