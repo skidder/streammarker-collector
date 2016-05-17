@@ -15,6 +15,9 @@ all: build test
 build:
 	go build -v -o streammarker-collector
 
+static-build:
+	CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -v -o streammarker-collector
+
 fmt:
 	go fmt ./...
 
