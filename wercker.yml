@@ -5,13 +5,6 @@ build:
     - skidder/glide-install@1.0.2
   
     - script:
-        name: Copy source to GOPATH
-        code: |
-          rm -rf vendor
-          mkdir -p ${GOPATH}/src/github.com/skidder/streammarker-collector
-          cp -R . ${GOPATH}/src/github.com/skidder/streammarker-collector
-
-    - script:
         name: build
         code: |
           make static-build
